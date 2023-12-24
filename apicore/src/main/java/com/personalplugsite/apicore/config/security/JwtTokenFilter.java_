@@ -1,0 +1,68 @@
+package com.personalplugsite.apicore.config.security;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.dxc.digital.fingerprint.data.config.security.CustomWebAuthenticationDetails;
+import com.dxc.digital.fingerprint.service.UserServiceImpl;
+
+@Component
+public class JwtTokenFilter extends OncePerRequestFilter {
+
+	private final JwtTokenUtil jwtTokenUtil;
+	private final UserServiceImpl userService;
+
+	public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UserServiceImpl userService) {
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.userService = userService;
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
+		// Get authorization header and validate
+		final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+		if (StringUtils.isEmpty(header) || !header.startsWith("Bearer ")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Get jwt token and validate
+		final String token = header.split(" ")[1].trim();
+		if (!jwtTokenUtil.validate(token)) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Extract localOffset claim from the JWT token
+		Integer localTimeOffset = jwtTokenUtil.getLocale(token);
+
+		// Get user identity and set it on the spring security context
+		UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUsername(token));
+
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+				userDetails == null ? new ArrayList<>() : userDetails.getAuthorities());
+
+		// Create an instance of the custom details object
+		CustomWebAuthenticationDetails customDetails = new CustomWebAuthenticationDetails(request, localTimeOffset);
+
+		authentication.setDetails(customDetails);
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		chain.doFilter(request, response);
+	}
+
+}
