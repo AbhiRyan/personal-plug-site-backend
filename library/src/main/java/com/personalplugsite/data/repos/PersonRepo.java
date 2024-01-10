@@ -1,48 +1,49 @@
 package com.personalplugsite.data.repos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.personalplugsite.data.entities.Person;
 
-import lombok.extern.slf4j.Slf4j;
+public interface PersonRepo extends JpaRepository<Person, Long> {
 
-@ConfigurationProperties("repo")
-@Slf4j
-public class PersonRepo {
-    private static String dbUrl;
-    private static String dbUser;
-    private static String dbPassword;
+    @Query("SELECT "
+            + "person_login.person_id "
+            + ",person_name "
+            + ",person_lastname "
+            + ",person_othername "
+            + ",person_email "
+            + "FROM "
+            + "person_login "
+            + "LEFT JOIN person_details ON person_login.person_id = person_details.person_id"
+            + "WHERE person_email = :email")
+    public Person getPersonByEmail(@Param("email") String email);
 
-    public Person getPersonFromDb(String nameSearch) {
-        try (Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM person WHERE name = ?");
-                ResultSet resultSet = statement.executeQuery()) {
-            statement.setString(1, nameSearch);
+    @Query("SELECT "
+            + "person_login.person_id "
+            + ",person_name "
+            + ",person_lastname "
+            + ",person_othername "
+            + ",person_email "
+            + "FROM "
+            + "person_login "
+            + "LEFT JOIN person_details ON person_login.person_id = person_details.person_id"
+            + "WHERE person_id = :personId")
+    public Person getPersonById(@Param("personId") Long personId);
 
-            while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
+    @Query("SELECT "
+            + "person_login.person_id "
+            + ",person_name "
+            + ",person_lastname "
+            + ",person_othername "
+            + ",person_email "
+            + "FROM "
+            + "person_login "
+            + "LEFT JOIN person_details ON person_login.person_id = person_details.person_id"
+            + "WHERE person_name contains :personName")
+    public List<Person> getPersonListfromName(@Param("personName") String personName);
 
-                // Process the retrieved data
-                log.info("ID: {}, Name: {}, Email: {}", id, name, email);
-
-                return new Person(id, name, email);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null; // Return null if no person found
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    }
 }

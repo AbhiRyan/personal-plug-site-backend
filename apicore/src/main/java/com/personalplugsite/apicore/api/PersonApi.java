@@ -1,5 +1,7 @@
 package com.personalplugsite.apicore.api;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,8 @@ public class PersonApi {
     PersonService personService;
 
     // @ApiOperation(value = "GetPerson", notes = "get person data")
-    @PostMapping(value = "/getPerson")
-    public PersonDto gerPersonEndPoint(@RequestBody String nameSearch) {
-        return personService.getPerson(nameSearch);
+    @PostMapping(value = "/getPersonByName")
+    public List<PersonDto> gerPersonByName(@RequestBody String nameSearch) {
+        return personService.getPersonDtoListFromName(nameSearch);
     }
 }
