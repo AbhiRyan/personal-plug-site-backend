@@ -1,0 +1,19 @@
+localised-values:
+  SECRET_KEY: 4a335b6859794a405d4c53502d47365a4b695c265032217d377758644c
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
+    username: apiuser
+    password: cV87SuX&3gbdYJD8n*A4OfHy8Hv@l1y
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+    database: POSTGRESQL
