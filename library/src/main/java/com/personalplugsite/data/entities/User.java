@@ -32,6 +32,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
     private Integer id;
+
     private String firstName;
     private String lastName;
     private String email;

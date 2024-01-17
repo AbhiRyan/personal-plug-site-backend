@@ -52,6 +52,7 @@ public class AuthenticationService {
                                                 request.getPassword()));
                 var user = userRepo.findByEmail(request.getEmail())
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+                jwtTokenUtil.removeUserTokensFromBlacklist(user.getId());
                 var jwtToken = jwtTokenUtil.generateToken(user);
                 return AuthenticaitonResponceDto.builder()
                                 .token(jwtToken)
