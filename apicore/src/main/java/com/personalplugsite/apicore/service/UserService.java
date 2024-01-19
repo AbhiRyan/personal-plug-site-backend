@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepo userRepo;
+  private final UserRepo userRepo;
 
-    public Optional<User> findByEmail(String email) {
-        return userRepo.findByEmail(email);
-    }
+  public Optional<User> findByEmail(String email) {
+    return userRepo.findByEmail(email);
+  }
 }

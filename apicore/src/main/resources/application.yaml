@@ -2,6 +2,11 @@ localised-values:
   SECRET_KEY: 4a335b6859794a405d4c53502d47365a4b695c265032217d377758644c
 server:
   port: 8080
+  ssl:
+    key-store: ./keystore.p12
+    key-store-password: TIG8W0y4bdmc
+    key-store-type: PKCS12
+    key-alias: selfsigned_localhost_sslserver
 spring:
   datasource:
     url: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
@@ -17,3 +22,13 @@ spring:
         format_sql: true
         default_schema: public
     database: POSTGRESQL
+pps-app:
+  jwt:
+    cookieName: jwt
+    cookieMaxAge: 604800 #seconds
+  api:
+    publicEndpoints:
+      - /api/auth/user/logout
+      - /api/auth/user/register
+      - /api/auth/user/authenticate
+      - /api/auth/**

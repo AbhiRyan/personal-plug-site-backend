@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/central")
 public class CentralApi {
 
-    @GetMapping(value = "/test-string")
-    public ResponseEntity<String> testString() {
-        return ResponseEntity.ok("Test String");
-    }
+  @GetMapping(value = "/test-string")
+  public ResponseEntity<String> testString() {
+    return ResponseEntity.ok("Test String");
+  }
 
 }

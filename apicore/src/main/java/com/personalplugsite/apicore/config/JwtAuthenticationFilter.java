@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,38 +22,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenUtil jwtTokenUtil;
-    private final UserDetailsService userDetailsService;
+  private final JwtTokenUtil jwtTokenUtil;
+  private final UserDetailsService userDetailsService;
 
-    @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        String jwt = null;
-        String userEmail = null;
+  @Override
+  protected void doFilterInternal(
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
-            userEmail = jwtTokenUtil.extractUsername(jwt);
-        }
-
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            jwtTokenUtil.blacklistedTokenCheck(jwt);
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtTokenUtil.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities());
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        }
-        filterChain.doFilter(request, response);
+    String jwt = jwtTokenUtil.extractTokenFromRequest(request);
+    String userEmail = null;
+    if (jwt != null) {
+      userEmail = jwtTokenUtil.extractUsername(jwt);
     }
+
+    if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+      jwtTokenUtil.blacklistedTokenCheck(jwt);
+      UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+      if (jwtTokenUtil.isTokenValid(jwt, userDetails)) {
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            userDetails,
+            null,
+            userDetails.getAuthorities());
+        authToken.setDetails(
+            new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+      }
+    }
+    filterChain.doFilter(request, response);
+  }
 
 }
