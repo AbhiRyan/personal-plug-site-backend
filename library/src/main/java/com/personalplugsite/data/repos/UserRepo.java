@@ -7,6 +7,6 @@ import com.personalplugsite.data.entities.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    Optional<User> findByEmail(String email);
+  Optional<User> findByEmail(String email);
 
 }

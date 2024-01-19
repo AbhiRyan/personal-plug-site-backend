@@ -8,21 +8,21 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-		"com.personalplugsite.apicore.config",
-		"com.personalplugsite.apicore.service",
-		"com.personalplugsite.apicore.api",
-		"com.personalplugsite.data.dtos",
-		"com.personalplugsite.data.enums",
-		"com.personalplugsite.data.exception",
-		"com.personalplugsite.data.entities",
-		"com.personalplugsite.data.repos"
+    "com.personalplugsite.apicore.config",
+    "com.personalplugsite.apicore.service",
+    "com.personalplugsite.apicore.api",
+    "com.personalplugsite.data.dtos",
+    "com.personalplugsite.data.enums",
+    "com.personalplugsite.data.exception",
+    "com.personalplugsite.data.entities",
+    "com.personalplugsite.data.repos"
 })
 @EnableJpaRepositories(basePackages = "com.personalplugsite.data.repos")
 @EntityScan("com.personalplugsite.data.entities")
 public class ApiCoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiCoreApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(ApiCoreApplication.class, args);
+  }
 
 }
