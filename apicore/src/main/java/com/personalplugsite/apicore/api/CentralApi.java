@@ -13,5 +13,4 @@ public class CentralApi {
   public ResponseEntity<String> testString() {
     return ResponseEntity.ok("Test String");
   }
-
 }

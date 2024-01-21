@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "token_blacklist")
 public class BlacklistedToken {
+
   @Id
   private Integer id;
+
   private String token;
 }
