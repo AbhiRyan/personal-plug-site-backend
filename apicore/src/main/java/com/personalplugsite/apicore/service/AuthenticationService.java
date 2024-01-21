@@ -59,7 +59,10 @@ public class AuthenticationService {
     var user = userRepo
       .findByEmail(request.getEmail())
       .orElseThrow(() -> new RuntimeException("User not found"));
-    jwtTokenUtil.removeUserTokensFromBlacklist(user.getId());
+    Integer userId = user.getId();
+    if (userId != null) {
+      jwtTokenUtil.removeUserTokensFromBlacklist(userId);
+    }
     var jwtToken = jwtTokenUtil.generateToken(user);
     return AuthenticaitonResponceDto
       .builder()
