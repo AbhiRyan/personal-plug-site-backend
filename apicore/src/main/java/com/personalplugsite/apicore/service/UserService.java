@@ -1,17 +1,15 @@
 package com.personalplugsite.apicore.service;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.personalplugsite.data.entities.User;
 import com.personalplugsite.data.repos.UserRepo;
-
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
   private final UserRepo userRepo;
 
   public Optional<User> findByEmail(String email) {

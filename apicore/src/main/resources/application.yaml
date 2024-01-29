@@ -26,9 +26,4 @@ pps-app:
   jwt:
     cookieName: jwt
     cookieMaxAge: 604800 #seconds
-  api:
-    publicEndpoints:
-      - /api/auth/user/logout
-      - /api/auth/user/register
-      - /api/auth/user/authenticate
-      - /api/auth/**
+    

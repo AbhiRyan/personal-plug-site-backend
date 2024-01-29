@@ -1,32 +1,28 @@
 package com.personalplugsite.apicore.config;
 
-import java.net.http.HttpResponse;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
 import com.personalplugsite.data.entities.BlacklistedToken;
 import com.personalplugsite.data.entities.User;
-import com.personalplugsite.data.exception.UserNotAuthenticatedException;
 import com.personalplugsite.data.repos.TokenBlacklistRepo;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +32,9 @@ public class JwtTokenUtil {
 
   @Value("${localised-values.SECRET_KEY}")
   private String secretKey;
+
+  @Value("${pps-app.jwt.cookieName}")
+  private String jwtCookieName;
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
@@ -60,18 +59,16 @@ public class JwtTokenUtil {
     return generateToken(new HashMap<>(), user);
   }
 
-  public String generateToken(
-      Map<String, Object> extraClaims,
-      User user) {
+  public String generateToken(Map<String, Object> extraClaims, User user) {
     return Jwts
-        .builder()
-        .claims(extraClaims)
-        .claim("id", user.getId())
-        .subject(user.getUsername())
-        .issuedAt(Date.from(Instant.now()))
-        .expiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
-        .signWith(getSignInKey())
-        .compact();
+      .builder()
+      .claims(extraClaims)
+      .claim("id", user.getId())
+      .subject(user.getUsername())
+      .issuedAt(Date.from(Instant.now()))
+      .expiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
+      .signWith(getSignInKey())
+      .compact();
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -85,11 +82,11 @@ public class JwtTokenUtil {
 
   private Claims extractAllClaims(String token) {
     return Jwts
-        .parser()
-        .verifyWith(getSignInKey())
-        .build()
-        .parseSignedClaims(token)
-        .getPayload();
+      .parser()
+      .verifyWith(getSignInKey())
+      .build()
+      .parseSignedClaims(token)
+      .getPayload();
   }
 
   private SecretKey getSignInKey() {
@@ -113,7 +110,7 @@ public class JwtTokenUtil {
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
       for (Cookie cookie : cookies) {
-        if ("jwt".equals(cookie.getName())) {
+        if (jwtCookieName.equals(cookie.getName())) {
           jwt = cookie.getValue();
           break;
         }
@@ -124,17 +121,20 @@ public class JwtTokenUtil {
 
   /**
    * Checks if the token is blacklisted and throws an exception if it is
-   * 
+   *
    * @param token
    */
   public void blacklistedTokenCheck(String token) {
     Integer userId = extractUserId(token);
-    tokenBlacklistRepo.findById(userId).ifPresent(
-        tokenBlacklist -> {
-          if (tokenBlacklist.getToken().equals(token)) {
-            throw new UserNotAuthenticatedException("Token is blacklisted");
-          }
-        });
+    tokenBlacklistRepo
+      .findById(userId)
+      .ifPresent(tokenBlacklist -> {
+        if (tokenBlacklist.getToken().equals(token)) {
+          throw new ResponseStatusException(
+            HttpStatus.UNAUTHORIZED,
+            "Unauthorized"
+          );
+        }
+      });
   }
-
 }
