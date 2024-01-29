@@ -4,15 +4,19 @@ import com.personalplugsite.apicore.config.JwtTokenUtil;
 import com.personalplugsite.data.dtos.AuthenticaitonResponceDto;
 import com.personalplugsite.data.dtos.AuthenticationRequestDto;
 import com.personalplugsite.data.dtos.RegisterRequestDto;
+import com.personalplugsite.data.dtos.UserDto;
 import com.personalplugsite.data.entities.User;
 import com.personalplugsite.data.enums.Role;
 import com.personalplugsite.data.exception.UserCreationException;
 import com.personalplugsite.data.repos.UserRepo;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +47,7 @@ public class AuthenticationService {
     return AuthenticaitonResponceDto
       .builder()
       .token(jwtToken)
-      .user(user)
+      .userDto(getUserDtoFromUser(user))
       .build();
   }
 
@@ -67,7 +71,31 @@ public class AuthenticationService {
     return AuthenticaitonResponceDto
       .builder()
       .token(jwtToken)
-      .user(user)
+      .userDto(getUserDtoFromUser(user))
       .build();
+  }
+
+  private UserDto getUserDtoFromUser(User user) {
+    return UserDto
+      .builder()
+      .id(user.getId())
+      .firstName(user.getFirstName())
+      .lastName(user.getLastName())
+      .email(user.getEmail())
+      .role(user.getRole().name())
+      .build();
+  }
+
+  public AuthenticaitonResponceDto refreshSession(String token) {
+    String email = jwtTokenUtil.extractUsername(token);
+    Optional<User> optionalUser = userRepo.findByEmail(email);
+    if (optionalUser.isPresent()) {
+      return AuthenticaitonResponceDto
+        .builder()
+        .token(token)
+        .userDto(getUserDtoFromUser(optionalUser.get()))
+        .build();
+    }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
   }
 }

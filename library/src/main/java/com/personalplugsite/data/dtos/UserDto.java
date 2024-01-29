@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequestDto implements Serializable {
+public class UserDto implements Serializable {
 
-  private static final long serialVersionUID = -5933383689318339522L;
+  private static final long serialVersionUID = -5247873174031499937L;
+  private Integer id;
   private String firstName;
   private String lastName;
   private String email;
-  private String password;
+  private String role;
 }

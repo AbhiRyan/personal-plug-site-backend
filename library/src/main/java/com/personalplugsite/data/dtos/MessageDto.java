@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticaitonResponceDto implements Serializable {
+public class MessageDto implements Serializable {
 
-  private static final long serialVersionUID = -5830921380190649119L;
-  private String token;
-  private UserDto userDto;
+  private static final long serialVersionUID = -6446710407875843972L;
+  private String message;
 }

@@ -2,7 +2,6 @@ package com.personalplugsite.apicore.config;
 
 import com.personalplugsite.data.entities.BlacklistedToken;
 import com.personalplugsite.data.entities.User;
-import com.personalplugsite.data.exception.UserNotAuthenticatedException;
 import com.personalplugsite.data.repos.TokenBlacklistRepo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,9 +18,11 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,9 @@ public class JwtTokenUtil {
 
   @Value("${localised-values.SECRET_KEY}")
   private String secretKey;
+
+  @Value("${pps-app.jwt.cookieName}")
+  private String jwtCookieName;
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
@@ -106,7 +110,7 @@ public class JwtTokenUtil {
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
       for (Cookie cookie : cookies) {
-        if ("jwt".equals(cookie.getName())) {
+        if (jwtCookieName.equals(cookie.getName())) {
           jwt = cookie.getValue();
           break;
         }
@@ -126,7 +130,10 @@ public class JwtTokenUtil {
       .findById(userId)
       .ifPresent(tokenBlacklist -> {
         if (tokenBlacklist.getToken().equals(token)) {
-          throw new UserNotAuthenticatedException("Token is blacklisted");
+          throw new ResponseStatusException(
+            HttpStatus.UNAUTHORIZED,
+            "Unauthorized"
+          );
         }
       });
   }
