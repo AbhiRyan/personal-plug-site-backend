@@ -30,8 +30,8 @@ public class AuthenticationApi {
   @Value("${pps-app.jwt.cookieName}")
   private String jwtCookieName;
 
-  @Value("${pps-app.jwt.cookieMaxAge}")
-  private int jwtCookieMaxAge;
+  @Value("${pps-app.jwt.dayCountOfAuthValitiy}")
+  private int jwtDayCountOfAuthValitiy;
 
   @PostMapping(value = "/user/register")
   public ResponseEntity<AuthenticaitonResponceDto> userRegister(
@@ -104,7 +104,8 @@ public class AuthenticationApi {
       jwtCookie.setMaxAge(0);
       return jwtCookie;
     }
-    jwtCookie.setMaxAge(jwtCookieMaxAge); // sets max age to 7 days
+    int oneDayInSeconds = 60 * 60 * 24;
+    jwtCookie.setMaxAge(oneDayInSeconds * jwtDayCountOfAuthValitiy); // sets max age to 7 days
     return jwtCookie;
   }
 

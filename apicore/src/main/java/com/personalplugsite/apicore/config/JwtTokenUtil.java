@@ -36,6 +36,9 @@ public class JwtTokenUtil {
   @Value("${pps-app.jwt.cookieName}")
   private String jwtCookieName;
 
+  @Value("${pps-app.jwt.dayCountOfAuthValitiy}")
+  private int jwtDayCountOfAuthValitiy;
+
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
   }
@@ -66,7 +69,9 @@ public class JwtTokenUtil {
       .claim("id", user.getId())
       .subject(user.getUsername())
       .issuedAt(Date.from(Instant.now()))
-      .expiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
+      .expiration(
+        Date.from(Instant.now().plus(jwtDayCountOfAuthValitiy, ChronoUnit.DAYS))
+      )
       .signWith(getSignInKey())
       .compact();
   }
