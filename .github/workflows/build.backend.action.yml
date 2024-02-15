@@ -5,6 +5,20 @@ jobs:
   build:
     runs-on: windows-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: apiuser
+          POSTGRES_PASSWORD: cV87SuX&3gbdYJD8n*A4OfHy8Hv@l1y
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 8100:8100
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
