@@ -29,7 +29,4 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn clean install
-    - name: Build Docker image
-      run: docker build -t personal-plug-site .
-    - name: Run Docker container
-      run: docker run -d -p 8080:8080 personal-plug-site
+      
