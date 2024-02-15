@@ -7,7 +7,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:13
         env:
           POSTGRES_USER: apiuser
           POSTGRES_PASSWORD: cV87SuX&3gbdYJD8n*A4OfHy8Hv@l1y
@@ -17,7 +17,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 8100:8100
+          - 8100:5432
 
     steps:
     - uses: actions/checkout@v2
