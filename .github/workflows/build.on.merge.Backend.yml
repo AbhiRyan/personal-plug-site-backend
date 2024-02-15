@@ -1,4 +1,4 @@
-name: build-backend-action
+name: build-on-merge-action
 run-name: ${{ github.actor }} is build-backend-action
 on:
   pull_request:
