@@ -49,4 +49,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/abhiryan/personalplugsite_backend/personal-plug-site-backend:latest
+        tags: ghcr.io/abhiryan/personal-plug-site-backend/personal-plug-site-backend:latest
