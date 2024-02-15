@@ -33,9 +33,9 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
     - name: Build Docker image
-      run: docker build -t PersonalPlugSite_Backend .
+      run: docker build -t personal-plug-site-backend .
     # - name: Run Docker container
-    #   run: docker run -d -p 8080:8080 PersonalPlugSite_Backend
+    #   run: docker run -d -p 8080:8080 personal-plug-site-backend
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
     - name: Login to GitHub Container Registry
@@ -49,4 +49,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ github.repository }}/PersonalPlugSite_Backend:latest
+        tags: ghcr.io/${{ github.repository }}/personal-plug-site-backend:latest
