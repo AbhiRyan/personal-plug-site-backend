@@ -43,10 +43,11 @@ public class CookieValidationFilter implements Filter {
       boolean cookieIsValid = checkCookieValidity(request);
 
       if (!cookieIsValid) {
-        Cookie cookie = new Cookie(jwtCookieName, null);
+        Cookie cookie = new Cookie("cookieName", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        //return;
+        response.sendRedirect("/auth");
+        return;
       }
     }
 
@@ -60,7 +61,7 @@ public class CookieValidationFilter implements Filter {
     }
 
     for (Cookie cookie : cookies) {
-      if (jwtCookieName.equals(cookie.getName()) && (cookie.getMaxAge() > 0)) {
+      if (jwtCookieName.equals(cookie.getName())) {
         return true;
       }
     }

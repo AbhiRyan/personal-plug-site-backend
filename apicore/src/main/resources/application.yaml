@@ -25,5 +25,5 @@ spring:
 pps-app:
   jwt:
     cookieName: jwt
-    cookieMaxAge: 604800 #seconds
+    dayCountOfAuthValitiy: 1
     

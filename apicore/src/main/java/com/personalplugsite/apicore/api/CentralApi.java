@@ -1,8 +1,6 @@
 package com.personalplugsite.apicore.api;
 
 import com.personalplugsite.data.dtos.MessageDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
