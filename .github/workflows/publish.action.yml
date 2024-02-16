@@ -9,6 +9,10 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build-and-push-image:
@@ -23,8 +27,8 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: apiuser
-          POSTGRES_PASSWORD: cV87SuX&3gbdYJD8n*A4OfHy8Hv@l1y
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
           POSTGRES_DB: PERSONAL_PLUG_DB
         options: >-
           --health-cmd pg_isready
@@ -44,6 +48,11 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn clean install
+        env:
+          SECRET_KEY: ${{ env.SECRET_KEY }}
+          KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
