@@ -16,8 +16,8 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: apiuser
-          POSTGRES_PASSWORD: ${{ secrets.REPO_SECRET }}
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
           POSTGRES_DB: PERSONAL_PLUG_DB
         options: >-
           --health-cmd pg_isready
@@ -36,3 +36,8 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn clean install
+      env:
+        SECRET_KEY: ${{ env.SECRET_KEY }}
+        KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
+        DB_USERNAME: ${{ env.DB_USERNAME }}
+        DB_PASSWORD: ${{ env.DB_PASSWORD }}
