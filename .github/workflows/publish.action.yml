@@ -27,8 +27,8 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: apiuser
-          POSTGRES_PASSWORD: ${{ secrets.REPO_SECRET }}
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
           POSTGRES_DB: PERSONAL_PLUG_DB
         options: >-
           --health-cmd pg_isready

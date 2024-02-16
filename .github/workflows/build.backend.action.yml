@@ -2,11 +2,11 @@ name: build-backend-action
 run-name: ${{ github.actor }} is build-backend-action
 on: [pull_request]
 
-# env:
-#   SECRET_KEY: ${{ secrets.SECRET_KEY }}
-#   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-#   DB_USERNAME: ${{ secrets.DB_USERNAME }}
-#   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+env:
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build:
@@ -16,8 +16,8 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
           POSTGRES_DB: PERSONAL_PLUG_DB
         options: >-
           --health-cmd pg_isready
@@ -37,7 +37,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        SECRET_KEY: ${{ env.SECRET_KEY }}
+        KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
+        DB_USERNAME: ${{ env.DB_USERNAME }}
+        DB_PASSWORD: ${{ env.DB_PASSWORD }}
