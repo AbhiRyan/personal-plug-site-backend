@@ -1,17 +1,17 @@
 localised-values:
-  SECRET_KEY: 4a335b6859794a405d4c53502d47365a4b695c265032217d377758644c
+  SECRET_KEY: ${SECRET_KEY}
 server:
   port: 8080
   ssl:
     key-store: ./keystore.p12
-    key-store-password: TIG8W0y4bdmc
+    key-store-password: ${KEY_STORE_PASSWORD}
     key-store-type: PKCS12
     key-alias: selfsigned_localhost_sslserver
 spring:
   datasource:
     url: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
-    username: apiuser
-    password: cV87SuX&3gbdYJD8n*A4OfHy8Hv@l1y
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

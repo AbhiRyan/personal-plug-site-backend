@@ -1,6 +1,13 @@
 name: build-backend-action
 run-name: ${{ github.actor }} is build-backend-action
 on: [pull_request]
+
+env:
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
