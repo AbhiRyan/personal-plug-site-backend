@@ -9,7 +9,7 @@ server:
     key-alias: selfsigned_localhost_sslserver
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
+    url: ${DB_CONNECTION_STRING}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
