@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - personal-plug-site
+name: deploy azure backend
 
 on:
   workflow_dispatch:
@@ -13,25 +13,26 @@ env:
   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
 
 jobs:
   build-and-push-image:
     runs-on: 'ubuntu-latest'
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: ${{ env.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
-          POSTGRES_DB: PERSONAL_PLUG_DB
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 8100:5432
+    # services:
+    #   postgres:
+    #     image: postgres:13
+    #     env:
+    #       POSTGRES_USER: ${{ env.DB_USERNAME }}
+    #       POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+    #       POSTGRES_DB: PERSONAL_PLUG_DB
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #     ports:
+    #       - 5432:8100
 
     steps:
       - name: Checkout repository
@@ -50,6 +51,7 @@ jobs:
           KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
           DB_USERNAME: ${{ env.DB_USERNAME }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_CONNECTION_STRING: ${{ env.DB_CONNECTION_STRING }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
