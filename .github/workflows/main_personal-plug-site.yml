@@ -75,7 +75,9 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          # labels: ${{ steps.meta.outputs.labels }}
+          labels: ${{ steps.meta.outputs.labels }}
+          secrets: |
+            ${{secrets.GITHUB_TOKEN}}
 
   deploy:
     runs-on: ubuntu-latest
