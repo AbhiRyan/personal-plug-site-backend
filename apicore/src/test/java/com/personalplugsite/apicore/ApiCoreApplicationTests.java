@@ -3,12 +3,19 @@ package com.personalplugsite.apicore;
 import com.personalplugsite.data.repos.TokenBlacklistRepo;
 import com.personalplugsite.data.repos.UserRepo;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest
+@TestPropertySource(
+  properties = {
+    "spring.datasource.url=jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB",
+    "spring.datasource.username=${DB_USERNAME}",
+    "spring.datasource.password=${DB_PASSWORD}",
+    "spring.jpa.hibernate.ddl-auto=create-drop",
+  }
+)
 class ApiCoreApplicationTests {
 
   @MockBean
