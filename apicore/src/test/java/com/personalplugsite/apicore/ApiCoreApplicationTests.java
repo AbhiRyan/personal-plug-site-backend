@@ -3,10 +3,10 @@ package com.personalplugsite.apicore;
 import com.personalplugsite.data.repos.TokenBlacklistRepo;
 import com.personalplugsite.data.repos.UserRepo;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest
+@DataJpaTest
 class ApiCoreApplicationTests {
 
   @MockBean
