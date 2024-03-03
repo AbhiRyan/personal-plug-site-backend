@@ -94,6 +94,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'personal-plug-site'
-        slot-name: 'prod'
+        slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_d7c62f79f5f6402192ce40edfc098be6 }}
         images: '${{ env.REGISTRY }}/${{ github.repository }}:${{ github.sha }}'
