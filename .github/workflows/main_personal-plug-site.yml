@@ -69,7 +69,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -94,6 +94,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'personal-plug-site'
-        slot-name: 'prod'
+        slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_d7c62f79f5f6402192ce40edfc098be6 }}
         images: '${{ env.REGISTRY }}/${{ github.repository }}:${{ github.sha }}'
