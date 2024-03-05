@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME_LOWERCASE: abhiryan/personal-plug-site-backend
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -96,4 +97,4 @@ jobs:
         app-name: 'personal-plug-site'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_d7c62f79f5f6402192ce40edfc098be6 }}
-        images: '${{ github.repository }}:${{ github.sha }}'
+        images: '${{ env.IMAGE_NAME_LOWERCASE }}:${{ github.sha }}'
