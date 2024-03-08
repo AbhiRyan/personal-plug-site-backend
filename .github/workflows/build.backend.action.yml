@@ -9,6 +9,7 @@ env:
   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_SSL_MODE: ${{ secrets.DB_SSL_MODE }}
 
 jobs:
   build:
@@ -46,4 +47,5 @@ jobs:
         KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
         DB_USERNAME: ${{ env.DB_USERNAME }}
         DB_PASSWORD: ${{ env.DB_PASSWORD }}
+        DB_SSL_MODE: ${{ env.DB_SSL_MODE }}
         DB_CONNECTION_STRING: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
