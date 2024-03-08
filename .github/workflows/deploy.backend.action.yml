@@ -1,5 +1,5 @@
 #
-name: publish-docker-image
+name: deploy to azure container regsitry
 
 
 on:
