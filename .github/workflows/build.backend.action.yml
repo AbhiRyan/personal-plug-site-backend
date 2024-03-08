@@ -21,7 +21,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ env.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
-          POSTGRES_DB: PERSONAL_PLUG_DB
+          POSTGRES_DB: personal-plug-db
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -48,4 +48,4 @@ jobs:
         DB_USERNAME: ${{ env.DB_USERNAME }}
         DB_PASSWORD: ${{ env.DB_PASSWORD }}
         DB_SSL_MODE: ${{ env.DB_SSL_MODE }}
-        DB_CONNECTION_STRING: jdbc:postgresql://localhost:8100/PERSONAL_PLUG_DB
+        DB_CONNECTION_STRING: jdbc:postgresql://localhost:8100/personal-plug-db
