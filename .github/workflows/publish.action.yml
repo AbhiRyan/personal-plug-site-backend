@@ -12,6 +12,8 @@ env:
   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+  DB_SSL_MODE: ${{ secrets.DB_SSL_MODE }}
 
 jobs:
   build-and-push-image:
@@ -27,7 +29,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ env.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
-          POSTGRES_DB: PERSONAL_PLUG_DB
+          POSTGRES_DB: personal-plug-db
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
