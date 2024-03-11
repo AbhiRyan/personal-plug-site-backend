@@ -1,12 +1,6 @@
 localised-values:
   SECRET_KEY: ${SECRET_KEY}
-server:
-  port: 8080
-  ssl:
-    key-store: ./keystore.p12
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-store-type: PKCS12
-    key-alias: selfsigned_localhost_sslserver
+
 spring:
   datasource:
     url: ${DB_CONNECTION_STRING}
@@ -27,4 +21,22 @@ pps-app:
   jwt:
     cookieName: jwt
     dayCountOfAuthValitiy: 1
-    
+
+---
+spring:
+  profiles: 
+    active: dev
+server:
+  port: 8080
+  ssl:
+    key-store: ./keystore.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: selfsigned_localhost_sslserver
+
+---
+spring:
+  profiles: 
+    active: prod
+server:
+  port: 8080
