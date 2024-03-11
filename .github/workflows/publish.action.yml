@@ -49,7 +49,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -P prod
         env:
           SECRET_KEY: ${{ env.SECRET_KEY }}
           KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
