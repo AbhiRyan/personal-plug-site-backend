@@ -58,6 +58,7 @@ jobs:
           KEY_STORE_PASSWORD: ${{ env.KEY_STORE_PASSWORD }}
           DB_USERNAME: ${{ env.DB_USERNAME }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_CONNECTION_STRING: ${{ env.DB_CONNECTION_STRING }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
