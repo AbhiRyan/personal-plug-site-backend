@@ -12,4 +12,4 @@ COPY ./apicore/target/*.jar ./app.jar
 
 # Run the web service on container startup.
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "./app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "./app.jar"]
