@@ -6,7 +6,6 @@ spring:
     url: ${DB_CONNECTION_STRING}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    sslmode: ${DB_SSL_MODE}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
