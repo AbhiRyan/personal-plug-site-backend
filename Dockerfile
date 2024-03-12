@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./apicore/target/*.jar ./app.jar
 
 # Copy the keystore.p12 file
-COPY ./keystore.p12 ./keystore.p12
+# COPY ./keystore.p12 ./keystore.p12
 
 # Run the web service on container startup.
 EXPOSE 8080
