@@ -24,8 +24,9 @@ pps-app:
 
 ---
 spring:
-  profiles: dev
-
+  config:
+    activate:
+      on-profile: dev
 server:
   port: 8080
   ssl:
@@ -36,7 +37,8 @@ server:
 
 ---
 spring:
-  profiles: prod
-
+  config:
+    activate:
+      on-profile: prod
 server:
   port: 8080
