@@ -1,5 +1,6 @@
 localised-values:
   SECRET_KEY: ${SECRET_KEY}
+  CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
 
 spring:
   datasource:
