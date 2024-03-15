@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
@@ -27,7 +26,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class JwtTokenUtil {
 
   private final TokenBlacklistRepo tokenBlacklistRepo;
@@ -80,15 +78,6 @@ public class JwtTokenUtil {
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
-    log.info("Username: " + username + " -------------------");
-    log.info(
-      "UserDetails: " + userDetails.getUsername() + " -------------------"
-    );
-    log.info(
-      "is token expired: " +
-      String.valueOf(isTokenExpired(token)) +
-      " -------------------"
-    );
     return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
   }
 
@@ -122,7 +111,6 @@ public class JwtTokenUtil {
   }
 
   public String extractTokenFromRequest(HttpServletRequest request) {
-    log.info("Extracting jwt token from request -------------------");
     String jwt = null;
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
@@ -132,8 +120,6 @@ public class JwtTokenUtil {
           break;
         }
       }
-    } else {
-      log.info("No cookies found in request -------------------");
     }
     return jwt;
   }
@@ -149,7 +135,6 @@ public class JwtTokenUtil {
       .findById(userId)
       .ifPresent(tokenBlacklist -> {
         if (tokenBlacklist.getToken().equals(token)) {
-          log.info("Token is blacklisted -------------------");
           throw new ResponseStatusException(
             HttpStatus.UNAUTHORIZED,
             "Unauthorized"

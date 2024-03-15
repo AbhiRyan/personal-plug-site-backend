@@ -11,12 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class CookieValidationFilter implements Filter {
 
   @Value("${pps-app.jwt.cookieName}")
@@ -31,12 +29,6 @@ public class CookieValidationFilter implements Filter {
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-    log.info(
-      "CookieValidationFilter hit: " +
-      request.getRequestURI() +
-      "-------------------"
-    );
-
     // List of endpoints that should bypass the cookie check
     List<String> bypassEndpoints = Arrays.asList(
       "/api/auth/user/logout",
@@ -48,24 +40,15 @@ public class CookieValidationFilter implements Filter {
     String requestEndpointPath = request.getRequestURI();
 
     if (!bypassEndpoints.contains(requestEndpointPath)) {
-      log.info(
-        requestEndpointPath + " is not in the bypass list -------------------"
-      );
-
       boolean cookieIsValid = checkCookieValidity(request);
 
       if (!cookieIsValid) {
-        log.info("Cookie is not valid -------------------");
         Cookie cookie = new Cookie("cookieName", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         response.sendRedirect("/auth");
         return;
       }
-    } else {
-      log.info(
-        requestEndpointPath + " is in the bypass list -------------------"
-      );
     }
 
     filterChain.doFilter(servletRequest, servletResponse);
@@ -74,17 +57,14 @@ public class CookieValidationFilter implements Filter {
   private boolean checkCookieValidity(HttpServletRequest request) {
     Cookie[] cookies = request.getCookies();
     if (cookies == null) {
-      log.info("No cookies found -------------------");
       return false;
     }
 
     for (Cookie cookie : cookies) {
       if (jwtCookieName.equals(cookie.getName())) {
-        log.info(jwtCookieName + " cookie found -------------------");
         return true;
       }
     }
-    log.info(jwtCookieName + " cookie not found -------------------");
     return false;
   }
 }
