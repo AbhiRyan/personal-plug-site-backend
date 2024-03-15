@@ -116,6 +116,7 @@ public class JwtTokenUtil {
   }
 
   public String extractTokenFromRequest(HttpServletRequest request) {
+    log.info("Extracting jwt token from request -------------------");
     String jwt = null;
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
@@ -125,6 +126,8 @@ public class JwtTokenUtil {
           break;
         }
       }
+    } else {
+      log.info("No cookies found in request -------------------");
     }
     return jwt;
   }
