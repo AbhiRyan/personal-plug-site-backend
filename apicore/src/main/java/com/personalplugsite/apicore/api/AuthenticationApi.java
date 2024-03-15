@@ -100,12 +100,14 @@ public class AuthenticationApi {
     Cookie jwtCookie = new Cookie(jwtCookieName, jwtToken);
     jwtCookie.setHttpOnly(true);
     jwtCookie.setPath("/");
+    jwtCookie.setSecure(true);
+    jwtCookie.setAttribute("SameSite", "None");
     if (jwtToken == null) {
       jwtCookie.setMaxAge(0);
       return jwtCookie;
     }
     int oneDayInSeconds = 60 * 60 * 24;
-    jwtCookie.setMaxAge(oneDayInSeconds * jwtDayCountOfAuthValitiy); // sets max age to 7 days
+    jwtCookie.setMaxAge(oneDayInSeconds * jwtDayCountOfAuthValitiy);
     return jwtCookie;
   }
 
