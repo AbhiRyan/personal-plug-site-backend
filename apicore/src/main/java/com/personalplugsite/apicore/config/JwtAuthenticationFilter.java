@@ -39,6 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String userEmail = null;
     if (jwt != null) {
       userEmail = jwtTokenUtil.extractUsername(jwt);
+    } else {
+      log.info("No jwt token found -------------------");
     }
 
     if (

@@ -80,9 +80,15 @@ public class JwtTokenUtil {
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
-    log.info("Username: " + username);
-    log.info("UserDetails: " + userDetails.getUsername());
-    log.info("is token expired: " + String.valueOf(isTokenExpired(token)));
+    log.info("Username: " + username + " -------------------");
+    log.info(
+      "UserDetails: " + userDetails.getUsername() + " -------------------"
+    );
+    log.info(
+      "is token expired: " +
+      String.valueOf(isTokenExpired(token)) +
+      " -------------------"
+    );
     return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
   }
 
@@ -116,6 +122,7 @@ public class JwtTokenUtil {
   }
 
   public String extractTokenFromRequest(HttpServletRequest request) {
+    log.info("Extracting jwt token from request -------------------");
     String jwt = null;
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
@@ -125,6 +132,8 @@ public class JwtTokenUtil {
           break;
         }
       }
+    } else {
+      log.info("No cookies found in request -------------------");
     }
     return jwt;
   }
