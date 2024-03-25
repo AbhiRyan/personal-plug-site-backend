@@ -43,7 +43,7 @@ public class CookieValidationFilter implements Filter {
       boolean cookieIsValid = checkCookieValidity(request);
 
       if (!cookieIsValid) {
-        Cookie cookie = new Cookie("cookieName", null);
+        Cookie cookie = new Cookie("expiredCookie", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         response.sendRedirect("/auth");
